@@ -3,7 +3,11 @@ import random
 
 
 def main():
-    board = initBoard()
+    print("WARNING: Depending on the font of your command line, the black" +
+          " squares may show up as white, and vice versa.")
+    print("         (I say this only because such is the case on my end.)")
+    print("         The goal of the game is still to change all to black.")
+    board = initBoard(False)
     printBoard(board)
     xInput = -1
     yInput = -1
@@ -31,27 +35,34 @@ def main():
     print("You won with " + str(numMoves) + " moves!")
 
 
-def initBoard():
+def initBoard(test):
     line = []
     base = []
     for outer in range(5):
         for inner in range(5):
-            if random.randint(0, 1) == 0:
-                line.append("\N{WHITE SQUARE}")
-            else:
-                line.append("\N{BLACK SQUARE}")
+            line.append("\N{BLACK SQUARE}")
         base.append(line)
         line = []
+    if test:
+        base[1][2] = toggle(base[1][2])
+        base[3][2] = toggle(base[3][2])
+        base[2][1] = toggle(base[2][1])
+        base[2][3] = toggle(base[2][3])
+    else:
+        for _ in range(15):
+            base = click(base, random.randint(0, 4), random.randint(0, 4))
     return base
 
 
 def printBoard(board):
-    line = "      "
+    print("\n        1 2 3 4 5")
     for outer in range(5):
+        line = "      " + str(outer + 1) + " "
         for inner in range(5):
             line += board[outer][inner] + " "
         print(line)
         line = "      "
+    print("\n")
 
 
 def click(board, x, y):
