@@ -7,17 +7,28 @@ def main():
     printBoard(board)
     xInput = -1
     yInput = -1
+    prevX = -2
+    prevY = -2
     numMoves = 0
     while not isDark(board):
-        print("Please choose a row number (0-4): ")
+        print("Please choose a row number (1-5): ")
         yInput = input()
-        print("Please choose a column number (0-4): ")
+        print("Please choose a column number (1-5): ")
         xInput = input()
-        board = click(board, int(xInput), int(yInput))
+        board = click(board, int(xInput) - 1, int(yInput) - 1)
         printBoard(board)
-        numMoves += 1
+        # Increment move count if unique move, decrement if undoing last
+        # move
+        if xInput == prevX and yInput == prevY:
+            numMoves -= 1
+            prevX = -2
+            prevY = -2
+        else:
+            numMoves += 1
+            prevX = xInput
+            prevY = yInput
         print("Moves: " + str(numMoves))
-    print("You win!")
+    print("You won with " + str(numMoves) + " moves!")
 
 
 def initBoard():
@@ -25,23 +36,22 @@ def initBoard():
     base = []
     for outer in range(5):
         for inner in range(5):
-            if random.randint(0,1) == 0:
-                line.append("#")
+            if random.randint(0, 1) == 0:
+                line.append("\N{WHITE SQUARE}")
             else:
-                line.append("O")
-            # '#' is considered On, 'O' is considered Off
+                line.append("\N{BLACK SQUARE}")
         base.append(line)
         line = []
     return base
 
 
 def printBoard(board):
-    line = ""
+    line = "      "
     for outer in range(5):
         for inner in range(5):
             line += board[outer][inner] + " "
         print(line)
-        line = ""
+        line = "      "
 
 
 def click(board, x, y):
@@ -58,16 +68,16 @@ def click(board, x, y):
 
 
 def toggle(tile):
-    if tile == "#":
-        return "O"
+    if tile == "\N{WHITE SQUARE}":
+        return "\N{BLACK SQUARE}"
     else:
-        return "#"
+        return "\N{WHITE SQUARE}"
 
 
 def isDark(board):
     for outer in range(5):
         for inner in range(5):
-            if board[outer][inner] == "#":
+            if board[outer][inner] == "\N{WHITE SQUARE}":
                 return False
     return True
 
