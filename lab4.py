@@ -4,8 +4,20 @@ import random
 
 def main():
     board = initBoard()
-    printBoard(initBoard())
-    
+    printBoard(board)
+    xInput = -1
+    yInput = -1
+    numMoves = 0
+    while not isDark(board):
+        print("Please choose a row number (0-4): ")
+        yInput = input()
+        print("Please choose a column number (0-4): ")
+        xInput = input()
+        board = click(board, int(xInput), int(yInput))
+        printBoard(board)
+        numMoves += 1
+        print("Moves: " + str(numMoves))
+    print("You win!")
 
 
 def initBoard():
@@ -33,11 +45,31 @@ def printBoard(board):
 
 
 def click(board, x, y):
-    
+    board[y][x] = toggle(board[y][x])
+    if (x > 0):
+        board[y][x - 1] = toggle(board[y][x - 1])
+    if (x < 4):
+        board[y][x + 1] = toggle(board[y][x + 1])
+    if (y > 0):
+        board[y - 1][x] = toggle(board[y - 1][x])
+    if (y < 4):
+        board[y + 1][x] = toggle(board[y + 1][x])
+    return board
+
+
+def toggle(tile):
+    if tile == "#":
+        return "O"
+    else:
+        return "#"
 
 
 def isDark(board):
-    
+    for outer in range(5):
+        for inner in range(5):
+            if board[outer][inner] == "#":
+                return False
+    return True
 
 
 main()
