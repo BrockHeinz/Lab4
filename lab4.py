@@ -1,4 +1,4 @@
-# By Brock Heinz (bch285@nau.edu) & Manu Hailame ()
+# By Brock Heinz (bch285@nau.edu) & Manu Hailame (mvh36@nau.edu)
 import random
 
 
